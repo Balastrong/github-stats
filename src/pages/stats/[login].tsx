@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useGitHubPullRequests, useHandleStateRepositories } from "@/hooks";
@@ -37,6 +37,12 @@ export default function Stats() {
     pullRequestState,
     repositoriesOrder
   );
+
+  useEffect(() => {
+    if (session && session.user && session.user.login !== login) {
+      router.replace(`/stats/${session.user.login}`);
+    }
+  }, [session, login, router]);
 
   return (
     <div className="h-full w-full px-4 flex flex-col gap-4">
